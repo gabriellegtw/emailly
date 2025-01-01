@@ -1,12 +1,20 @@
 import { useState } from "react";
+import axios from "axios";
 
 function Home() {
     const [content, setContent] = useState("");
     const [display, setDisplay] = useState("");
 
     const handleClick = () => {
-      // Set display to current content
-      setDisplay(content);
+      const input = {
+        content
+      };
+      axios.post('http://localhost:3001/api/formalize', input)
+      .then(response => {
+        console.log("response.data" + response.data)
+        setDisplay(response.data);
+      })
+      .catch(error => console.log("Error: " + error));
     };
 
     return (

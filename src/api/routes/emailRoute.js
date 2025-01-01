@@ -36,10 +36,12 @@ router.post('/formalize', async(req,res) => {
 
         console.log('Calling Bard with content:', rawContent);
 
-        const formalisedEmail = await bard.getBardResponse(`Make this email sound more formal: ${rawContent}`);
-        console.log('Bard response:', formalisedEmail);
+        const formalisedEmail = 
+        await bard.getBardResponse(`Make this email sound more formal. Just reply with the email itself: ${rawContent}`);
+        
+        console.log('Bard response:', formalisedEmail.text);
 
-        res.status(200).send(formalisedEmail);
+        res.status(200).send(formalisedEmail.text);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: "Oh no! Email formalization failed" });
