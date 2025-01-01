@@ -1,12 +1,20 @@
 import { useState } from "react";
+import axios from "axios";
 
 function Home() {
     const [content, setContent] = useState("");
     const [display, setDisplay] = useState("");
 
     const handleClick = () => {
-      // Set display to current content
-      setDisplay(content);
+      const input = {
+        content
+      };
+      axios.post('http://localhost:3001/api/formalize', input)
+      .then(response => {
+        console.log("response.data" + response.data)
+        setDisplay(response.data);
+      })
+      .catch(error => console.log("Error: " + error));
     };
 
     return (
@@ -40,7 +48,7 @@ function Home() {
         // So when you have 2 dives, you have to wrap it in a fragment
         <>
         <div className="w-full">
-          <p className="text-left text-gray-600">This is the formalised email:</p>
+          <p className="text-left text-gray-600">This is the formalized email:</p>
         </div>
         <div className="w-full bg-white p-4 rounded-md shadow-md">
           {/* whitespace pre wrap maintains the formatting of the content */}
