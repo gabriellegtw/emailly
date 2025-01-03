@@ -48,11 +48,11 @@ function Home() {
         // So when you have 2 dives, you have to wrap it in a fragment
         <>
         <div className="w-full">
-          <p className="text-left text-gray-600">This is the formalized email:</p>
+          <p className="text-left text-gray-600">Below is the formalized email, you can edit it however you like if you click into the box!</p>
         </div>
         <div className="w-full bg-white p-4 rounded-md shadow-md">
           {/* whitespace pre wrap maintains the formatting of the content */}
-          <p className="text-left text-gray-600 whitespace-pre-wrap">{display}</p>
+          <p contentEditable={true} className="text-left text-gray-600 whitespace-pre-wrap">{display}</p>
         </div>
         </>
         )}
