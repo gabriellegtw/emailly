@@ -1,11 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import LoginModal from './LoginModal';
+import SignUpModal from './SignUpModal';
 
 function Home() {
     const [content, setContent] = useState("");
     const [display, setDisplay] = useState("");
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isSignUpModalOpen, setisSignUpModalOpen] = useState(false);
 
-    const handleClick = () => {
+    const handleClickConvert = () => {
       const input = {
         content
       };
@@ -17,9 +21,55 @@ function Home() {
       .catch(error => console.log("Error: " + error));
     };
 
+    // The toggling of modals have to be handled in the parent class (Home.tsx) and
+    // not within the modals because that violates React's one-way flow of data
+    // Can think of it as how the main page is constantly there but not the modals
+    // so if you have the logic in the modals then the modals have to always be there 
+    // for the fucntions to work
+    const handleLoginToSignIn = () => {
+      setIsLoginModalOpen(false);
+      setisSignUpModalOpen(true);
+    };
+
+    const handleSignInToLogin = () => {
+      setisSignUpModalOpen(false);
+      setIsLoginModalOpen(true);
+    };
+
+    const openLoginModal = () => {
+      setIsLoginModalOpen(true);
+    }
+
+    const closeLoginModal = () => {
+      setIsLoginModalOpen(false);
+    }
+
+    const openSignUpModal = () => {
+      setisSignUpModalOpen(true);
+    }
+
+    const closeSignUpModal = () => {
+      setisSignUpModalOpen(false);
+    }
+
     return (
       // No need for full-page wrapper - that's in App.tsx
       <div className="space-y-6 w-[90%] md:w-[70%] lg:w-[50%] mx-auto">
+        {/* This is the pop-up for the log in page. When we pass data to a another page
+        i.e. through the isLoginModalOpen and closeLoginModal variables, these are called props.
+        Props can be states,components or functions.*/}
+        <>
+            <LoginModal 
+                isLoginModalOpen={isLoginModalOpen} 
+                closeLoginModal={closeLoginModal}
+                onSignUpClick={handleLoginToSignIn}
+            />
+            <SignUpModal 
+                isSignUpModalOpen={isSignUpModalOpen} 
+                closeSignUpModal={closeSignUpModal}
+                onLoginClick={handleSignInToLogin}
+            />
+        </>
         <h1 className="text-4xl font-bold text-gray-600">
           Hi! I am Emailly. I help to make your emails sound more formal
         </h1>
@@ -39,13 +89,18 @@ function Home() {
         />
         {/* ${} is an embedded expression. Anything inside is treated as a javascript expression.
         When you use embedded expression, use `` */}
-        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleClick}>
+        {/* mr means margin right*/}
+        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'} mr-4`} onClick={handleClickConvert}>
           Convert email
+        </button>
+
+        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={openLoginModal}>
+          Save as Draft
         </button>
 
         {display && (
         // When you return an element, there should only be one container
-        // So when you have 2 dives, you have to wrap it in a fragment
+        // So when you have 2 divs, you have to wrap it in a fragment
         <>
         <div className="w-full">
           <p className="text-left text-gray-600">Below is the formalized email, you can edit it however you like if you click into the box!</p>
