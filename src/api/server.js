@@ -1,6 +1,7 @@
 import express from 'express';
 import emailRoute from './routes/emailRoute.js';
 import signUpRoute from './routes/signUpRoute.js';
+import loginRoute from './routes/logInRoute.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -32,9 +33,12 @@ app.get('/', async (req, res) => {
   })
 });
 
+// api for making the email formal through gemini
 app.use('/api', emailRoute);
 
 app.use('/api', signUpRoute);
+
+app.use('/api', loginRoute);
 
 const PORT = process.env.PORT || 3001;
 
