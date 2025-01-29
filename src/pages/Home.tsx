@@ -7,7 +7,7 @@ function Home() {
     const [content, setContent] = useState("");
     const [display, setDisplay] = useState("");
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const [isSignUpModalOpen, setisSignUpModalOpen] = useState(false);
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
 
     const handleClickConvert = () => {
       const input = {
@@ -28,11 +28,11 @@ function Home() {
     // for the fucntions to work
     const handleLoginToSignIn = () => {
       setIsLoginModalOpen(false);
-      setisSignUpModalOpen(true);
+      setIsSignUpModalOpen(true);
     };
 
     const handleSignInToLogin = () => {
-      setisSignUpModalOpen(false);
+      setIsSignUpModalOpen(false);
       setIsLoginModalOpen(true);
     };
 
@@ -44,12 +44,8 @@ function Home() {
       setIsLoginModalOpen(false);
     }
 
-    const openSignUpModal = () => {
-      setisSignUpModalOpen(true);
-    }
-
     const closeSignUpModal = () => {
-      setisSignUpModalOpen(false);
+      setIsSignUpModalOpen(false);
     }
 
     return (
