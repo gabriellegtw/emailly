@@ -47,7 +47,7 @@ const LoginModal = ({isLoginModalOpen, closeLoginModal, onSignUpClick}: LoginMod
                 alert("Log in successful");
                 closeLoginModal();
             } else {
-                setErrorMessage("Password is incorrect");
+                setErrorMessage(res.data.data);
             }
         })
         .catch(e => console.error(e.message));
