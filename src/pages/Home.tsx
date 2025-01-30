@@ -37,6 +37,7 @@ function Home() {
     };
 
     const openLoginModal = () => {
+      console.log("opening login modal")
       setIsLoginModalOpen(true);
     }
 
