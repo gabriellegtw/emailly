@@ -44,6 +44,7 @@ const LoginModal = ({isLoginModalOpen, closeLoginModal, onSignUpClick}: LoginMod
             if (res.data.status === "ok") {
                 // Placing this here in an if/else is fine
                 // navigate('/');
+                localStorage.setItem("userEmail", email);
                 alert("Log in successful");
                 closeLoginModal();
             } else {

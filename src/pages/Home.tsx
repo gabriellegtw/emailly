@@ -8,6 +8,7 @@ function Home() {
     const [display, setDisplay] = useState("");
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+    const [emailId, setEmailId] = useState(null);
 
     const handleClickConvert = () => {
       const input = {
@@ -47,6 +48,28 @@ function Home() {
 
     const closeSignUpModal = () => {
       setIsSignUpModalOpen(false);
+    }
+
+    const handleSaveButton = () => {
+        const userEmail = localStorage.getItem("userEmail");
+
+        if (userEmail) {
+          const emailData = {
+            email_id: emailId,
+            user_email: userEmail,
+            content
+        }
+
+        axios.post("http://localhost:3001/api/save", emailData)
+        .then(res => {
+          setEmailId(res.data.email_id);
+          console.log("Email saved successfully and email id is : ", res.data.email_id);
+        })
+        .catch(e => console.error(e.message));
+
+      } else {
+        openLoginModal();
+      }
     }
 
     return (
@@ -91,7 +114,7 @@ function Home() {
           Convert email
         </button>
 
-        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={openLoginModal}>
+        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
           Save as Draft
         </button>
 
