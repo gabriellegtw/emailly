@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
+import Collection from './pages/Collection'
 import './App.css'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         {/* This route with path="/" is the default/home page */}
         <Route path="/" element={<Home />} />
+        <Route path="/collection" element={<Collection />} />
       </Routes>
     </BrowserRouter>
   )
