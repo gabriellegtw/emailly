@@ -2,6 +2,7 @@ import express from 'express';
 import emailRoute from './routes/emailRoute.js';
 import signUpRoute from './routes/signUpRoute.js';
 import loginRoute from './routes/logInRoute.js';
+import saveEmailRoute from './routes/saveEmailRoute.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -39,6 +40,9 @@ app.use('/api', emailRoute);
 app.use('/api', signUpRoute);
 
 app.use('/api', loginRoute);
+
+// api for saving email drafts
+app.use('/api', saveEmailRoute);
 
 const PORT = process.env.PORT || 3001;
 

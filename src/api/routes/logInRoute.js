@@ -2,7 +2,7 @@ import express from 'express';
 import pool from '../db.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';  // Import dotenv if not already imported
+import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
@@ -49,7 +49,7 @@ router.post('/login', async(req,res) => {
         const foundUser = user.rows[0];
         // If password is correct
         if (await bcrypt.compare(password, foundUser.password)) {
-            const token = jwt.sign({email:foundUser.email}, process.env.JWT_SECRET);
+            const token = jwt.sign({email:foundUser.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
             res.send({status: "ok", data: user, token})
         } else {
             return res.send({data: "Oops, wrong password"});
