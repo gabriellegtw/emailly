@@ -7,7 +7,7 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at 
     const navigate = useNavigate();
 
     const handleEditButton = () => {
-        navigate("/");
+      navigate('/', { state: { email_id, user_email, content, created_at, updated_at } });
     }
 
     // Format the date to a more readable format in GMT+8
@@ -21,7 +21,7 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at 
           minute: "2-digit",
           second: "2-digit",
       });
-  };
+    };
     
     return (
         <div className="w-150 mt-6 bg-white p-4 rounded-md shadow-md">
