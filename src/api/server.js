@@ -4,6 +4,7 @@ import signUpRoute from './routes/signUpRoute.js';
 import loginRoute from './routes/logInRoute.js';
 import saveEmailRoute from './routes/saveEmailRoute.js';
 import fetchEmailsRoute from './routes/fetchEmailsRoute.js';
+import deleteEmailRoute from './routes/deleteEmailRoute.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -47,6 +48,9 @@ app.use('/api', saveEmailRoute);
 
 // api for fetching all emails associated with a user
 app.use('/api', fetchEmailsRoute);
+
+// api for deleting an email
+app.use('/api', deleteEmailRoute);
 
 const PORT = process.env.PORT || 3001;
 

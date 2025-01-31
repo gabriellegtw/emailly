@@ -7,7 +7,19 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at 
     const navigate = useNavigate();
 
     const handleEditButton = () => {
-        navigate("/");
+      navigate('/', { state: { email_id, user_email, content, created_at, updated_at } });
+    }
+
+    const handleDeleteButton = () => {
+      const input = {
+        email_id,
+        user_email
+      };
+      axios.post('http://localhost:3001/api/deleteEmail', input)
+      .then(response => {
+        console.log("response.data" + response.data)
+      })
+      .catch(error => console.log("Error: " + error));
     }
 
     // Format the date to a more readable format in GMT+8
@@ -21,7 +33,7 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at 
           minute: "2-digit",
           second: "2-digit",
       });
-  };
+    };
     
     return (
         <div className="w-150 mt-6 bg-white p-4 rounded-md shadow-md">
@@ -43,7 +55,7 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at 
             {/* Delete Button */}
             <button 
               className="flex items-center text-gray-600 bg-white hover:text-gray-800 focus:outline-none focus:ring-0"
-              
+              onClick={handleDeleteButton}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>

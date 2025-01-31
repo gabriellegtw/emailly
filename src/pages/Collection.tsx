@@ -37,7 +37,8 @@ function Collection() {
       
       // Call fetchEmails within the useEffect
       fetchEmails();
-    }, []); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
+    }, [emails]); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
+    // so putting emails inside means that it would re render based on the number of emails! (like when u delete it will immediately show)
 
     const handleHomeButton = () => {
         navigate("/");

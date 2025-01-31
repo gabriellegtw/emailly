@@ -1,22 +1,30 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 
 function Home() {
-    const [content, setContent] = useState("");
+    // Better to do this if you want to pass states dynamically between navigation
+    // Passing it through the whole component is better for static data (refers to data that is "hardcoded" like login details)
+    const location = useLocation(); // Used to get the current location
+
+    // location state is the state object passed along navigation actiond
+    // If there is no state passed along, the default is null (empty set)
+    const { email_id, user_email, content, created_at, updated_at } = location.state || {};
+
+    const [writtenContent, setWrittenContent] = useState<string>(content);
     const [display, setDisplay] = useState("");
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-    const [emailId, setEmailId] = useState(null);
+    const [emailId, setEmailId] = useState(email_id);
 
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();
 
     const handleClickConvert = () => {
       const input = {
-        content
+        content: writtenContent
       };
       axios.post('http://localhost:3001/api/formalize', input)
       .then(response => {
@@ -55,13 +63,14 @@ function Home() {
     }
 
     const handleSaveButton = () => {
+        console.log("save button clicked");
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
           const emailData = {
             email_id: emailId,
             user_email: userEmail,
-            content
+            content: writtenContent
         }
 
         axios.post("http://localhost:3001/api/save", emailData)
@@ -74,6 +83,7 @@ function Home() {
         .catch(e => console.error(e.message));
 
       } else {
+        console.log("No user found, please log in");
         openLoginModal();
       }
     }
@@ -114,20 +124,20 @@ function Home() {
         className="w-full h-64 px-4 py-2 rounded-md text-white focus:ring-0 border-none"
         placeholder="Enter your email content here"
         // e is an event object
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => setWrittenContent(e.target.value)}
         // We need the below because onChange handler causes a re-render
-        // Meaning to say that React will not know of the true value of content
-        // The textbox will still show the content but that is managed by the DOM
-        value={content}
+        // Meaning to say that React will not know of the true value of writtenContent
+        // The textbox will still show the writtenContent but that is managed by the DOM
+        value={writtenContent}
         />
         {/* ${} is an embedded expression. Anything inside is treated as a javascript expression.
         When you use embedded expression, use `` */}
         {/* mr means margin right*/}
-        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'} mr-4`} onClick={handleClickConvert}>
+        <button className={`text-left ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'} mr-4`} onClick={handleClickConvert}>
           Convert email
         </button>
 
-        <button className={`text-left ${content ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
+        <button className={`text-left ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
           Save as Draft
         </button>
 
@@ -139,7 +149,7 @@ function Home() {
           <p className="text-left text-gray-600">Below is the formalized email, you can edit it however you like if you click into the box!</p>
         </div>
         <div className="w-full bg-white p-4 rounded-md shadow-md">
-          {/* whitespace pre wrap maintains the formatting of the content */}
+          {/* whitespace pre wrap maintains the formatting of the writtenContent */}
           <p contentEditable={true} className="text-left text-gray-600 whitespace-pre-wrap">{display}</p>
         </div>
         </>

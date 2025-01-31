@@ -24,8 +24,11 @@ router.post('/save', async(req,res) => {
     console.log("save working")
 
     try {
+        console.log("test before req body");
         // This information is requested from the client
         const {email_id, user_email, content} = req.body;
+
+        console.log("test after req body");
 
         if (!content) {
             return res.status(400).json({ error: 'Email content is required' });
