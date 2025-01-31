@@ -24,7 +24,7 @@ function Home() {
 
     const handleClickConvert = () => {
       const input = {
-        writtenContent
+        content: writtenContent
       };
       axios.post('http://localhost:3001/api/formalize', input)
       .then(response => {
