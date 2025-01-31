@@ -31,7 +31,9 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
+  width: 100%;
   min-height: 100vh;
+  align-items:stretch;
 }
 
 h1 {
@@ -50,9 +52,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+/* button:hover {
   border-color: #646cff;
-}
+} */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

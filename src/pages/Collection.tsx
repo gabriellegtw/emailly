@@ -15,7 +15,7 @@ function Collection() {
     // Side Effects are any operations that affects the state of application or interacts with outside world
     useEffect(() => {
       const userEmail = localStorage.getItem("userEmail");
-
+    
       if (!userEmail) {
         console.log("no userEmail");
         return ;
@@ -44,15 +44,23 @@ function Collection() {
     }
     
     return (
-        <div className="flex flex-col items-start p-4">
+        <div className="flex flex-col p-4 w-full items-center">
         <button className={`mb-8 text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200`} onClick={handleHomeButton} >
           ← Go back to converting emails
         </button>
-
+        <div className="w-full max-w-3xl">
         {emails.map((email, index) => (
-                <EmailContainer key={index} content={email.content} /> // If type is not defined, email.content has error
+                <EmailContainer 
+                key={index} 
+                email_id={email.email_id}
+                user_email={email.user_email}
+                content={email.content}
+                created_at={email.created_at} 
+                updated_at={email.updated_at}
+                /> // If type is not defined, email.content has error
             ))}
-       
+        </div>
+  
       </div>
     )
   }
