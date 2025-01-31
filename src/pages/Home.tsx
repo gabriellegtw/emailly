@@ -66,8 +66,10 @@ function Home() {
 
         axios.post("http://localhost:3001/api/save", emailData)
         .then(res => {
+          // This is the (new) email ID that is saved into the database by the API
           setEmailId(res.data.email_id);
           console.log("Email saved successfully and email id is : ", res.data.email_id);
+          alert("Email saved successfully :)");
         })
         .catch(e => console.error(e.message));
 

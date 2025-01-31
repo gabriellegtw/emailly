@@ -1,12 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EmailContainer from "../components/emailContainer";
+import { Email } from "../types/Email"; // import the Email type from the types folder
 
 function Collection() {
+    // Type only needs to be defined if it is not a primitive type in hooks
+    const [emails, setEmails] = useState<Email[]>([]);
 
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();
+
+    // useEffect runs side effects whenever the component renders
+    // Side Effects are any operations that affects the state of application or interacts with outside world
+    useEffect(() => {
+      const userEmail = localStorage.getItem("userEmail");
+
+      if (!userEmail) {
+        console.log("no userEmail");
+        return ;
+      }
+
+      console.log(userEmail);
+
+      // define fetchEmails function
+      const fetchEmails = async () => {
+          try {
+            const response = await axios.post('http://localhost:3001/api/fetchEmails', {
+              email: userEmail  // Send userEmail in the request body
+            });
+              setEmails(response.data.rows); // Get the array of emails
+          } catch (error) {
+              console.error("Error fetching emails:", error);
+          }
+      };
+      
+      // Call fetchEmails within the useEffect
+      fetchEmails();
+    }, []); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
 
     const handleHomeButton = () => {
         navigate("/");
@@ -18,11 +49,9 @@ function Collection() {
           ← Go back to converting emails
         </button>
 
-        <EmailContainer
-            content="Lorem ipsum dolor sit amet, consectetur 
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad 
-            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
-        </EmailContainer>
+        {emails.map((email, index) => (
+                <EmailContainer key={index} content={email.content} /> // If type is not defined, email.content has error
+            ))}
        
       </div>
     )
