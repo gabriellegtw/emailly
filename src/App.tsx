@@ -12,13 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* This route with path="/" is the default/home page */}
-        <Route path="/" element={<Home 
-          // email_id={null}
-          // user_email=""
-          // content=""
-          // created_at={new Date()}
-          // updated_at={new Date()}
-        />} />
+        <Route path="/" element={<Home />} />
         <Route path="/collection" element={<Collection />} />
       </Routes>
     </BrowserRouter>

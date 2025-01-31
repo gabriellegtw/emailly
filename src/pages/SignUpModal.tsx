@@ -49,6 +49,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
                 // Placing this here in an if/else is fine
                 // navigate('/');
                 alert("Sign Up successful");
+                localStorage.setItem("userEmail", email);
                 closeSignUpModal();
             } else {
                 alert(res.data);

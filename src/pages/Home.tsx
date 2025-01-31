@@ -22,6 +22,13 @@ function Home() {
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+      alert("You have logged out");
+      // Clear user data from local storage
+      localStorage.removeItem("userEmail");
+      navigate("/");
+    };
+
     const handleClickConvert = () => {
       const input = {
         content: writtenContent
@@ -92,6 +99,12 @@ function Home() {
       navigate("/collection");
     }
 
+    // This starts a brand new email draft
+    const handleNewButton = () => {
+      setWrittenContent("");
+      setEmailId(null);
+    }
+
     return (
       // No need for full-page wrapper - that's in App.tsx
       <div className="space-y-6 w-[90%] md:w-[70%] lg:w-[50%] mx-auto">
@@ -110,12 +123,29 @@ function Home() {
                 onLoginClick={handleSignInToLogin}
             />
         </>
+
+        {localStorage.getItem("userEmail") && (
+          <>
+            <div className="flex justify-between items-center">
+              <button className="text-left text-white bg-gray-600 hover:bg-red-300 rounded-lg" onClick={handleLogout}>
+                  Log out
+              </button>
+            </div>
+          </>
+        )}
+         
         <h1 className="text-4xl font-bold text-gray-600">
           Hi! I am Emailly. I help to make your emails sound more formal
         </h1>
-        <button className={`text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200`} onClick={handleCollectionButton} >
-          View past email drafts →
-        </button>
+
+        {localStorage.getItem("userEmail") && (
+          <>
+            <button className={`text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200`} onClick={handleCollectionButton} >
+              View past email drafts →
+            </button>
+          </>
+        )}
+
         <p className="text-gray-600 text-left">
           Just type your informal sounding email here:
         </p>
@@ -130,15 +160,20 @@ function Home() {
         // The textbox will still show the writtenContent but that is managed by the DOM
         value={writtenContent}
         />
+
+        <button className={`text-left mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleNewButton}>
+          Start a new Email
+        </button> 
+
+        <button className={`text-left mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
+          Save as Draft
+        </button>
+
         {/* ${} is an embedded expression. Anything inside is treated as a javascript expression.
         When you use embedded expression, use `` */}
         {/* mr means margin right*/}
-        <button className={`text-left ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'} mr-4`} onClick={handleClickConvert}>
+        <button className={`text-left ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleClickConvert}>
           Convert email
-        </button>
-
-        <button className={`text-left ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
-          Save as Draft
         </button>
 
         {display && (
