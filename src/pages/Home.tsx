@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 
@@ -9,6 +10,9 @@ function Home() {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [emailId, setEmailId] = useState(null);
+
+    // Hooks cannot be within the function, it has to be at the top level
+    const navigate = useNavigate();
 
     const handleClickConvert = () => {
       const input = {
@@ -62,14 +66,20 @@ function Home() {
 
         axios.post("http://localhost:3001/api/save", emailData)
         .then(res => {
+          // This is the (new) email ID that is saved into the database by the API
           setEmailId(res.data.email_id);
           console.log("Email saved successfully and email id is : ", res.data.email_id);
+          alert("Email saved successfully :)");
         })
         .catch(e => console.error(e.message));
 
       } else {
         openLoginModal();
       }
+    }
+
+    const handleCollectionButton = () => {
+      navigate("/collection");
     }
 
     return (
@@ -93,6 +103,9 @@ function Home() {
         <h1 className="text-4xl font-bold text-gray-600">
           Hi! I am Emailly. I help to make your emails sound more formal
         </h1>
+        <button className={`text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200`} onClick={handleCollectionButton} >
+          View past email drafts →
+        </button>
         <p className="text-gray-600 text-left">
           Just type your informal sounding email here:
         </p>
