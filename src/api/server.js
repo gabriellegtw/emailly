@@ -16,7 +16,11 @@ import deleteEmailRoute from './routes/deleteEmailRoute.js';
 const app = express();
 
 // Add CORS middleware to allow frontend requests
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],  
+  allowedHeaders: ['Content-Type', 'Authorization'],  
+}));
 
 // Middleware 
 app.use(express.json());

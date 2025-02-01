@@ -32,7 +32,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
         // Contains at least one lowercase letter
         // Contains at least one number
         // Contains at least one special character
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+}{":?><`~';,.=-]{8,}$/;;
         return passwordRegex.test(password);
     };
 
