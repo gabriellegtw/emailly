@@ -13,6 +13,21 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false, // Required for Render
 });
 
+// Add an error listener to help debug
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
+// Add a test query
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('Error connecting to the database', err);
+  } else {
+    console.log('Successfully connected to database');
+  }
+});
+
 // const pool = new Pool({
 //   user: process.env.DATABASE_USER,
 //   host: process.env.DATABASE_HOST,
