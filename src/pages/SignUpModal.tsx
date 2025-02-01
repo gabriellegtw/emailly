@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { toast } from "react-toastify";
 import { X } from 'lucide-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 interface SignUpModalProps {
     isSignUpModalOpen: boolean;
@@ -25,11 +25,27 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
     // hooks cannot be rendered conditionally
     // const navigate = useNavigate();
 
+    // Password validation function
+    const isPasswordValid = (password: string): boolean => {
+        // At least 8 characters long
+        // Contains at least one uppercase letter
+        // Contains at least one lowercase letter
+        // Contains at least one number
+        // Contains at least one special character
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(password);
+    };
+
     const handleSignUpSubmit = (e: React.FormEvent) => {
 
         // This to prevent the default javascript behaviour of reloading the whole page when the form is submitted
         // reloading is refreshing the page
         e.preventDefault();
+
+        if (!isPasswordValid(password)) {
+            setErrorMessage("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+            return;
+        }
 
         if (password != confirmPassword) {
             setErrorMessage("Passwords do not match!");
@@ -48,13 +64,17 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
             if (res.data.status === "ok") {
                 // Placing this here in an if/else is fine
                 // navigate('/');
-                alert("Sign Up successful");
+                toast.success("Sign Up successful");
+                localStorage.setItem("userEmail", email);
                 closeSignUpModal();
             } else {
-                alert(res.data);
+                setErrorMessage(res.data.data);
             }
         })
-        .catch(e => console.error(e.message));
+        .catch(e => {
+            console.error(e.message);
+            toast.error("Error creating account");
+        });
     }
 
     return (
@@ -109,7 +129,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
                     Register
                 </button>
 
-                {/* Show error message if passwords don’t match */}
+                {/* Show error message if passwords don't match */}
                 {errorMessage && <div className="text-red-500 text-center">{errorMessage}</div>}
 
                 <div className="text-black text-sm">
