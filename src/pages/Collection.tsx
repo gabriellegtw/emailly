@@ -12,7 +12,7 @@ function Collection() {
     // This is for the pagination
     const [currentPage, setCurrentPage] = useState(1); // Track current page
     const [totalPages, setTotalPages] = useState(1); // Total number of pages
-    const [emailsPerPage, setEmailsPerPage] = useState(5); // Emails per page
+    const [emailsPerPage, _setEmailsPerPage] = useState(5); // Emails per page
 
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();

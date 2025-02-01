@@ -12,7 +12,7 @@ function Home() {
 
     // location state is the state object passed along navigation actiond
     // If there is no state passed along, the default is null (empty set)
-    const { email_id, user_email, content, created_at, updated_at } = location.state || {};
+    const { email_id, content } = location.state || {};
 
     const [writtenContent, setWrittenContent] = useState<string>(content);
     const [display, setDisplay] = useState("");
