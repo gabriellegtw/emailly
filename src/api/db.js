@@ -8,9 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../../.env') });
 
-// Add debug logging
+// Add more detailed debug logging
+console.log('Environment variables:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
+console.log('DATABASE_URL length:', process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0);
+console.log('DATABASE_URL first 10 chars:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 10) : 'not set');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL, // Use connection string
@@ -23,14 +25,15 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-// Add a test query
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Error connecting to the database', err);
-  } else {
-    console.log('Successfully connected to database');
-  }
-});
+// Make the test query async
+(async () => {
+    try {
+        const result = await pool.query('SELECT NOW()');
+        console.log('Database connection successful:', result.rows[0]);
+    } catch (err) {
+        console.error('Database connection error:', err);
+    }
+})();
 
 // const pool = new Pool({
 //   user: process.env.DATABASE_USER,
