@@ -12,7 +12,7 @@ function Collection() {
     // This is for the pagination
     const [currentPage, setCurrentPage] = useState(1); // Track current page
     const [totalPages, setTotalPages] = useState(1); // Total number of pages
-    const [emailsPerPage, setEmailsPerPage] = useState(5); // Emails per page
+    const [emailsPerPage, _setEmailsPerPage] = useState(5); // Emails per page
 
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ function Collection() {
       // define fetchEmails function
       const fetchEmails = async () => {
           try {
-            const response = await axios.post('http://localhost:3001/api/fetchEmails', {
+            const response = await axios.post('https://emailly-1.onrender.com/api/fetchEmails', {
               email: userEmail,  // Send userEmail in the request body
               page: currentPage,
               limit: emailsPerPage

@@ -39,7 +39,7 @@ const LoginModal = ({isLoginModalOpen, closeLoginModal, onSignUpClick}: LoginMod
 
         console.log("Login button pressed");
 
-        axios.post("http://localhost:3001/api/login", userData)
+        axios.post("https://emailly-1.onrender.com/api/login", userData)
         .then(res => {
             if (res.data.status === "ok") {
                 // Placing this here in an if/else is fine

@@ -12,7 +12,7 @@ function Home() {
 
     // location state is the state object passed along navigation actiond
     // If there is no state passed along, the default is null (empty set)
-    const { email_id, user_email, content, created_at, updated_at } = location.state || {};
+    const { email_id, content } = location.state || {};
 
     const [writtenContent, setWrittenContent] = useState<string>(content);
     const [display, setDisplay] = useState("");
@@ -34,7 +34,8 @@ function Home() {
       const input = {
         content: writtenContent
       };
-      axios.post('http://localhost:3001/api/formalize', input)
+      toast.success("Hold on, we are converting your email. It might take a while");
+      axios.post('https://emailly-1.onrender.com/api/formalize', input)
       .then(response => {
         console.log("response.data" + response.data)
         setDisplay(response.data);
@@ -81,7 +82,7 @@ function Home() {
             content: writtenContent
         }
 
-        axios.post("http://localhost:3001/api/save", emailData)
+        axios.post("https://emailly-1.onrender.com/api/save", emailData)
         .then(res => {
           // This is the (new) email ID that is saved into the database by the API
           setEmailId(res.data.email_id);

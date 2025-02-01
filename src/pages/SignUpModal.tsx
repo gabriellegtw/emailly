@@ -59,7 +59,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
 
         console.log("Sign up button pressed");
 
-        axios.post("http://localhost:3001/api/signup", userData)
+        axios.post("https://emailly-1.onrender.com/api/signup", userData)
         .then(res => {
             if (res.data.status === "ok") {
                 // Placing this here in an if/else is fine

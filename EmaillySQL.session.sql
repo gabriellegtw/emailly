@@ -15,10 +15,6 @@ CREATE TABLE emails(
     content TEXT NOT NULL,  -- Assuming you want to store the email content
     FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE  -- Set up foreign key constraint, establishes a relation between the tables
     -- ON DELETE CASCADE means that if user is deleted, emails is also deleted
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-ALTER TABLE emails
-ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
-
-ALTER TABLE emails
-ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
