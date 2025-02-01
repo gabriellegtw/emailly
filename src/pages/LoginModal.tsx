@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from "react-toastify";
 import { X } from 'lucide-react';
 import axios from 'axios';
 
@@ -44,7 +45,7 @@ const LoginModal = ({isLoginModalOpen, closeLoginModal, onSignUpClick}: LoginMod
                 // Placing this here in an if/else is fine
                 // navigate('/');
                 localStorage.setItem("userEmail", email);
-                alert("Log in successful");
+                toast.success("Sucessfully logged in!");
                 closeLoginModal();
             } else {
                 setErrorMessage(res.data.data);

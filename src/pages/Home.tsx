@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import LoginModal from './LoginModal';
@@ -26,6 +27,7 @@ function Home() {
       // Clear user data from local storage
       localStorage.removeItem("userEmail");
       navigate("/");
+      toast.success("You have logged out");
     };
 
     const handleClickConvert = () => {
@@ -84,7 +86,7 @@ function Home() {
           // This is the (new) email ID that is saved into the database by the API
           setEmailId(res.data.email_id);
           console.log("Email saved successfully and email id is : ", res.data.email_id);
-          alert("Email saved successfully :)");
+          toast.success("Email successfully saved!");
         })
         .catch(e => console.error(e.message));
 

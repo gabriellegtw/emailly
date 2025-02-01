@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EmailContainer from "../components/emailContainer";
@@ -39,6 +40,7 @@ function Collection() {
               console.log(totalPages);
           } catch (error) {
               console.error("Error fetching emails:", error);
+              toast.error("Error fetching emails");
           }
       };
 
@@ -49,7 +51,8 @@ function Collection() {
       fetchEmails();
     }, [currentPage]); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
     // so putting current inside means that it would re render based on the page ypu are on
-    // Best
+    // Putting emails in here would cause it to infinitely refresh as fetchEmails causes the emails to change so it infinitely refreshes
+    // Better to put the fetchEmails within the delete button
 
     const handleHomeButton = () => {
         navigate("/");
