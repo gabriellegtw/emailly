@@ -8,13 +8,15 @@ function Collection() {
     // Type only needs to be defined if it is not a primitive type in hooks
     const [emails, setEmails] = useState<Email[]>([]);
 
+    // This is for the pagination
+    const [currentPage, setCurrentPage] = useState(1); // Track current page
+    const [totalPages, setTotalPages] = useState(1); // Total number of pages
+    const [emailsPerPage, setEmailsPerPage] = useState(5); // Emails per page
+
     // Hooks cannot be within the function, it has to be at the top level
     const navigate = useNavigate();
 
-    // useEffect runs side effects whenever the component renders
-    // Side Effects are any operations that affects the state of application or interacts with outside world
-    useEffect(() => {
-      const userEmail = localStorage.getItem("userEmail");
+    const userEmail = localStorage.getItem("userEmail");
     
       if (!userEmail) {
         console.log("no userEmail");
@@ -27,42 +29,96 @@ function Collection() {
       const fetchEmails = async () => {
           try {
             const response = await axios.post('http://localhost:3001/api/fetchEmails', {
-              email: userEmail  // Send userEmail in the request body
+              email: userEmail,  // Send userEmail in the request body
+              page: currentPage,
+              limit: emailsPerPage
             });
               setEmails(response.data.rows); // Get the array of emails
+              setTotalPages(Math.ceil(response.data.totalCount / 5)); // Set total number of page
+              console.log(response.data.totalCount);
+              console.log(totalPages);
           } catch (error) {
               console.error("Error fetching emails:", error);
           }
       };
-      
+
+    // useEffect runs side effects whenever the component renders
+    // Side Effects are any operations that affects the state of application or interacts with outside world
+    useEffect(() => {
       // Call fetchEmails within the useEffect
       fetchEmails();
-    }, [emails]); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
-    // so putting emails inside means that it would re render based on the number of emails! (like when u delete it will immediately show)
+    }, [currentPage]); // Empty array means this effect runs once when the component mounts (instead of every time XX changes)
+    // so putting current inside means that it would re render based on the page ypu are on
+    // Best
 
     const handleHomeButton = () => {
         navigate("/");
     }
+
+    // Change to previous page
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+      }
+
+      // Go to last page if at the start
+      if (currentPage == 1) {
+          setCurrentPage(totalPages);
+      }
+    };
+
+    // Change to next page
+    const handleNextPage = () => {
+      if (currentPage < totalPages) {
+          setCurrentPage(currentPage + 1);
+      }
+
+      if (currentPage == totalPages) {
+        setCurrentPage(1);
+      }
+    };
     
     return (
-        <div className="flex flex-col p-4 w-full items-center">
-        <button className={`mb-8 text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200`} onClick={handleHomeButton} >
-          ← Go back to converting emails
-        </button>
-        <div className="w-full max-w-3xl">
-        {emails.map((email, index) => (
-                <EmailContainer 
-                key={index} 
-                email_id={email.email_id}
-                user_email={email.user_email}
-                content={email.content}
-                created_at={email.created_at} 
-                updated_at={email.updated_at}
-                /> // If type is not defined, email.content has error
-            ))}
+        <div className="flex flex-col p-1 sm:p-2 md:p-4 w-full min-w-[320px] items-center">
+            {/* Back button - smaller on mobile */}
+            <button className="mb-2 sm:mb-4 md:mb-8 text-left text-black bg-pink-200 rounded-lg hover:bg-gray-200 text-xs sm:text-sm md:text-base px-2 sm:px-3 py-1 sm:py-2" onClick={handleHomeButton}>
+                ← Go back to converting emails
+            </button>
+
+            {/* Email container - smaller width on mobile */}
+            <div className="w-full max-w-[98%] sm:max-w-[95%] md:max-w-2xl lg:max-w-3xl px-1 sm:px-2">
+                {emails.map((email, index) => (
+                    <EmailContainer 
+                        key={index} 
+                        email_id={email.email_id}
+                        user_email={email.user_email}
+                        content={email.content}
+                        created_at={email.created_at} 
+                        updated_at={email.updated_at}
+                        fetchEmails={fetchEmails}
+                    />
+                ))}
+            </div>
+            
+            {/* Pagination Controls - smaller on mobile */}
+            <div className="flex justify-between w-full mt-4 sm:mt-6 md:mt-10 px-1 sm:px-2 md:px-4">
+                <button 
+                    className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                <span className="text-black text-xs sm:text-sm md:text-base self-center">{`Page ${currentPage} of ${totalPages}`}</span>
+                <button
+                    className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
+            </div>
         </div>
-  
-      </div>
     )
   }
   

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 interface LoginModalProps {
     isLoginModalOpen: boolean;

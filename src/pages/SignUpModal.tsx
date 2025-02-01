@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 interface SignUpModalProps {
     isSignUpModalOpen: boolean;
@@ -52,7 +51,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
                 localStorage.setItem("userEmail", email);
                 closeSignUpModal();
             } else {
-                alert(res.data);
+                setErrorMessage(res.data.data);
             }
         })
         .catch(e => console.error(e.message));

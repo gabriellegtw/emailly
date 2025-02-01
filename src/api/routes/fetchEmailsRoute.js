@@ -26,7 +26,10 @@ router.post('/fetchEmails', async(req,res) => {
 
     try {
         // This information is requested from the client
-        const { email } = req.body;
+        const { email, page = 1, limit = 5 } = req.body;
+
+        // Need to calculate offset because different pages show a different "window" of 5 emails
+        const offset = (page - 1) * limit;
 
         if (!email) {
             return res.status(400).json({ error: 'No email entered' });
@@ -37,14 +40,25 @@ router.post('/fetchEmails', async(req,res) => {
         // The second argument is what replaces the placeholder
         // Need await because pool query is an async function so we need to wait for the result before proceeding
         const allEmails = await pool.query(
-            'SELECT * FROM emails WHERE user_email = $1',
+            'SELECT * FROM emails WHERE user_email = $1 LIMIT $2 OFFSET $3',
+            [email, limit, offset]
+        );
+
+
+        // Get the total count of emails for pagination
+        // You have to pass this because if you just take rows.count.length in the client then it will just return 5
+        // because only 5 emails are returned at a time
+        const totalCountResult = await pool.query(
+            'SELECT COUNT(*) FROM emails WHERE user_email = $1',
             [email]
         );
 
         // When you send back a response, the arguments need to have a property so you can reference it (eg. "rows:")
         return res.json({ 
             message: 'Emails fetched',
-            rows: allEmails.rows 
+            rows: allEmails.rows,
+            // Take rows[0] because SQL returns a table with 1 row which contains the count
+            totalCount: totalCountResult.rows[0].count
         });
     } catch (error) {
         console.log("Error in fetching emails: ", error.message)

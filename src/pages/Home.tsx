@@ -23,7 +23,6 @@ function Home() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-      alert("You have logged out");
       // Clear user data from local storage
       localStorage.removeItem("userEmail");
       navigate("/");
