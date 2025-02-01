@@ -1,19 +1,17 @@
 import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+// Load environment variables first, before any other imports
+dotenv.config();
+
+// Now import routes after environment variables are loaded
 import emailRoute from './routes/emailRoute.js';
 import signUpRoute from './routes/signUpRoute.js';
 import loginRoute from './routes/logInRoute.js';
 import saveEmailRoute from './routes/saveEmailRoute.js';
 import fetchEmailsRoute from './routes/fetchEmailsRoute.js';
 import deleteEmailRoute from './routes/deleteEmailRoute.js';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-// Get the correct path to .env file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, '../../.env') });
 
 const app = express();
 
