@@ -34,7 +34,8 @@ function Home() {
       const input = {
         content: writtenContent
       };
-      axios.post('http://localhost:3001/api/formalize', input)
+      toast.success("Hold on, we are converting your email. It might take a while");
+      axios.post('https://emailly-1.onrender.com/api/formalize', input)
       .then(response => {
         console.log("response.data" + response.data)
         setDisplay(response.data);
@@ -81,7 +82,7 @@ function Home() {
             content: writtenContent
         }
 
-        axios.post("http://localhost:3001/api/save", emailData)
+        axios.post("https://emailly-1.onrender.com/api/save", emailData)
         .then(res => {
           // This is the (new) email ID that is saved into the database by the API
           setEmailId(res.data.email_id);

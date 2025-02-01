@@ -12,7 +12,7 @@ function EmailContainer({ email_id, user_email, content, created_at, updated_at,
     const handleDeleteButton = async () => {
       const input = { email_id, user_email };
       try {
-          const response = await axios.post('http://localhost:3001/api/deleteEmail', input);
+          const response = await axios.post('https://emailly-1.onrender.com/api/deleteEmail', input);
           console.log("response.data", response.data);
           fetchEmails(); // Call fetchEmails to refresh the email list
       } catch (error) {

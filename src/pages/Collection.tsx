@@ -29,7 +29,7 @@ function Collection() {
       // define fetchEmails function
       const fetchEmails = async () => {
           try {
-            const response = await axios.post('http://localhost:3001/api/fetchEmails', {
+            const response = await axios.post('https://emailly-1.onrender.com/api/fetchEmails', {
               email: userEmail,  // Send userEmail in the request body
               page: currentPage,
               limit: emailsPerPage
