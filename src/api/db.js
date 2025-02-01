@@ -8,6 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../../.env') });
 
+// Add debug logging
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL, // Use connection string
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false, // Required for Render
