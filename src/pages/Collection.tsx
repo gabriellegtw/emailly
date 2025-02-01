@@ -63,21 +63,12 @@ function Collection() {
       if (currentPage > 1) {
           setCurrentPage(currentPage - 1);
       }
-
-      // Go to last page if at the start
-      if (currentPage == 1) {
-          setCurrentPage(totalPages);
-      }
     };
 
     // Change to next page
     const handleNextPage = () => {
       if (currentPage < totalPages) {
           setCurrentPage(currentPage + 1);
-      }
-
-      if (currentPage == totalPages) {
-        setCurrentPage(1);
       }
     };
     
@@ -102,25 +93,41 @@ function Collection() {
                     />
                 ))}
             </div>
+
+            {emails.length === 0 && (
+                <>
+                    <div className="w-full bg-white p-4 rounded-md shadow-md">
+                        <p className="text-left text-gray-600 whitespace-pre-wrap">
+                            Hmm.. you don't have any saved emails yet :(
+                        </p>
+                    </div>
+                </>
+            )}
+
+            {emails.length != 0 && (
+                <>
+                    {/* Pagination Controls - smaller on mobile */}
+                    <div className="flex justify-between w-full mt-4 sm:mt-6 md:mt-10 px-1 sm:px-2 md:px-4">
+                        <button 
+                            className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                        >
+                            Previous
+                        </button>
+                        <span className="text-black text-xs sm:text-sm md:text-base self-center">{`Page ${currentPage} of ${totalPages}`}</span>
+                        <button
+                            className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                        >
+                            Next
+                        </button>
+                    </div>
+                </>
+            )}
             
-            {/* Pagination Controls - smaller on mobile */}
-            <div className="flex justify-between w-full mt-4 sm:mt-6 md:mt-10 px-1 sm:px-2 md:px-4">
-                <button 
-                    className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <span className="text-black text-xs sm:text-sm md:text-base self-center">{`Page ${currentPage} of ${totalPages}`}</span>
-                <button
-                    className="bg-gray-300 px-1 sm:px-2 md:px-4 py-1 rounded-lg text-xs sm:text-sm md:text-base"
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
+            
         </div>
     )
   }
