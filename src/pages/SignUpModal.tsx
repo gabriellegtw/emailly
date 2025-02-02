@@ -58,6 +58,7 @@ const SignUpModal = ({isSignUpModalOpen, closeSignUpModal, onLoginClick}: SignUp
         };
 
         console.log("Sign up button pressed");
+        toast.success("Sign up button pressed. Please wait a moment!");
 
         axios.post("https://emailly-1.onrender.com/api/signup", userData)
         .then(res => {
