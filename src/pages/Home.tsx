@@ -163,11 +163,11 @@ function Home() {
         value={writtenContent}
         />
 
-        <button className={`text-left mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleNewButton}>
+        <button className={`text-left mb-4 md:mb-0 md:mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleNewButton}>
           Start a new Email
         </button> 
 
-        <button className={`text-left mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
+        <button className={`text-left mb-4 md:mb-0 md:mr-4 ${writtenContent ? 'bg-black-500 hover:bg-black-700' : 'bg-gray-400 cursor-not-allowed'}`} onClick={handleSaveButton}>
           Save as Draft
         </button>
 
